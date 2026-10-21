@@ -1,0 +1,54 @@
+/**
+ * 分段标题 + 卡片基础样式：从 ExpressionEditor.vue 的 <style scoped>
+ * 抽出的 .seg-title / .seg-n（含 .seg-n-empty 空段修饰）/ .qb-panel 三块，供 ExpressionEditor.vue
+ * 自身与宿主页面（如视图设计器经 #left-top 插槽插入的自定义分段）共用同一套「序号圆圈 + 标题」
+ * 视觉，不必各自重新实现一遍或裸抄一份易漂移的 CSS。
+ *
+ * 非 scoped 全局样式（同 token-colors.css / table-theme-colors.css 既有先例）：类名维持与
+ * ExpressionEditor.vue 改动前逐字一致，未做包内前缀改名——本次抽取只搬运位置，不改选择器，
+ * 保证 ExpressionEditor 自身渲染像素级不变（其余 .qb-source-panel/.qb-condition-panel/
+ * .qb-write-target-panel 等更具体的布局覆盖规则仍留在 ExpressionEditor.vue 内，不在本文件）。
+ */
+
+/* 卡片基础样式：①来源/②筛选条件/①写目标等各分段面板共用的边框/圆角/内边距/纵向排列容器。
+ * min-height:0 保证内容超出时区内滚动而不是撑破外层容器高度；具体的 flex 权重（如①②面板
+ * 2:3 定比）由各自更具体的选择器（.qb-source-panel 等）覆盖，不在本文件。 */
+.qb-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  border: 1px solid rgb(var(--border-color));
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/* 步骤标题：序号圆圈 + 标题文案的容器（写目标/来源/条件/右栏目标各段共用）。 */
+.seg-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(var(--base-text-color));
+}
+/* 步骤序号徽记：蓝色实心圆形 + 白色数字（白色借用 --container-bg-color，明亮模式下即白，避免裸 hex）。
+ * position:relative 供 ExpressionEditor.vue 内连接线 ::after 伪元素定位。 */
+.seg-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgb(var(--primary-color));
+  color: rgb(var(--container-bg-color, 255 255 255));
+  font-size: 12px;
+  position: relative;
+}
+/* 该步骤尚无内容时圆圈改灰底。 */
+.seg-n.seg-n-empty {
+  background: rgb(var(--border-deep-color));
+}

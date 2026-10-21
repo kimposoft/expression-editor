@@ -1,0 +1,8 @@
+Kimpo Expression Editor (@kimposoft/expression-editor)
+Copyright 2026 金宝量行（无锡）软件有限公司
+
+This product is licensed under the Apache License, Version 2.0
+(see the LICENSE file in this package).
+
+This product depends on CodeMirror 6 (MIT License, https://codemirror.net/),
+Vue (MIT License) and Naive UI (MIT License), which are not bundled in this package.

@@ -1,0 +1,57 @@
+/**
+ * 来源表主题色板（2026-09-02 样式草案，唯一定义处）。
+ *
+ * 目的：让用户在 ①来源表列表 / 字段树坞（AdvancedExpressionDialog）/ 快捷字段选择器 / 表达式
+ * token 四个面上，凭同一个颜色快速识别"这个字段属于哪张来源表"。
+ *
+ * 分配规则（见 tableThemeColors.ts）：按显式来源别名 t1/t2/… 的序号循环取色（t1=0 号…t9 回到 0）；
+ * 本报表 bt* 不占主题色（沿用既有绿色 form_field 语义/中性灰圆点）——主题色只服务"选中的来源表"。
+ *
+ * 【朴素原则】ttc-N 类只发两个自定义属性（--ttc 色值三元组 / --ttc-text 文字色），不直接改任何
+ * 视觉属性；消费方各自决定用多"淡"（圆点 / 12% 底 tint），避免全局类与 scoped 样式打特异性架。
+ * 色板刻意避开 token-colors.css 七类语义色里的"橙(函数)/青(raw)/紫(变量)"主观感知区，与之共存。
+ */
+
+.ttc-0 { --ttc: 13 148 136; --ttc-text: #0d8377; }  /* 青绿 */
+.ttc-1 { --ttc: 217 119 6; --ttc-text: #b2650a; }   /* 琥珀 */
+.ttc-2 { --ttc: 124 58 237; --ttc-text: #7040cf; }  /* 紫罗兰 */
+.ttc-3 { --ttc: 225 29 72; --ttc-text: #c62a52; }   /* 玫红 */
+.ttc-4 { --ttc: 8 145 178; --ttc-text: #0b7f9c; }   /* 青   */
+.ttc-5 { --ttc: 101 163 13; --ttc-text: #5f8f14; }  /* 橄榄绿 */
+.ttc-6 { --ttc: 192 38 211; --ttc-text: #a832b8; }  /* 品红 */
+.ttc-7 { --ttc: 146 89 40; --ttc-text: #8a5a2b; }   /* 棕（原为蓝，让给本报表） */
+/* 本报表独立色：本报表引用整条（`本报表.[表].[字段]`）、本报表各表的圆点/表 chip 都用它，不占来源表色板。 */
+.ttc-report { --ttc: 8 119 244; --ttc-text: #1d5fc9; }
+
+/* 深色模式：文字色提亮，底 tint 走同一 --ttc 半透明、无需另调。 */
+html.dark .ttc-0 { --ttc-text: #3fd6c5; }
+html.dark .ttc-1 { --ttc-text: #f3a94a; }
+html.dark .ttc-2 { --ttc-text: #b394f8; }
+html.dark .ttc-3 { --ttc-text: #fb7599; }
+html.dark .ttc-4 { --ttc-text: #4ecbe8; }
+html.dark .ttc-5 { --ttc-text: #a3d95a; }
+html.dark .ttc-6 { --ttc-text: #e879f9; }
+html.dark .ttc-7 { --ttc-text: #d9a066; }
+html.dark .ttc-report { --ttc-text: #6ab0ff; }
+
+/* 表主题色圆点：来源表带 ttc-N 时显该表色；无主题色（本报表/未识别别名）回落中性灰。 */
+.ttc-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(var(--ttc, 148 163 184));
+}
+
+/* 表达式 token 的表主题色 tint：叠加在 .tok-source_field / .tok-form_field 之上（.tok.ttc-themed 双类特异性恒胜
+ * token-colors.css 的单类语义色），浅底 + 表色文字，与既有 chip 视觉同构、只换色相。brackets（V4）语法的整条引用
+ * `[表].[字段]` 也是这一款：整条一个颜色，表名加粗、括号点号压暗见
+ * token-colors.css 的 .tok-part-*。 */
+.tok.ttc-themed {
+  background: rgb(var(--ttc) / 12%);
+  color: var(--ttc-text);
+}
+html.dark .tok.ttc-themed {
+  background: rgb(var(--ttc) / 22%);
+}

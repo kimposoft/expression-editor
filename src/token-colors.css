@@ -1,0 +1,104 @@
+/**
+ * 表达式 token 语义色板（唯一定义处）。
+ *
+ * 七类 ValueRef 各有一种可区分的色相：
+ *   蓝=来源表字段 / 绿=本报表字段 / 紫=系统变量 / 橙=函数 / 青=原始文本 / 粉=开窗函数 / 靛=分支(CASE)
+ * 灰用于常量与标点。
+ *
+ * 【为什么不映射到宿主主题 token】
+ * 宿主 token（设计系统规范）提供的是 container / layout / base-text / 填充 fill 档 / 描边 border 档 与调色板 5 色
+ * （primary/info/success/warning/error），没有可用于"七类字段互相区分"的七色。更关键的是：
+ * 这里的颜色承担的是**语义区分**而非品牌表达——若把蓝映射成 primary，宿主把主题色改成绿色时，
+ * "来源表字段"就会与"本报表字段"撞成同色，读者无法再分辨 token 类型。故本色板刻意独立于主题色，
+ * 只用局部自定义属性集中承载（同 picker-modal-shell 对"非透传色"的既定处理方式）。
+ *
+ * 历史问题：本色板此前在 ExpressionInput.vue 与 ExpressionEditor.vue 各写了一份逐字相同的副本，
+ * 改一处忘另一处即出现同一 token 在输入框与编辑区显示不同颜色。现收敛为这一份。
+ */
+
+.tok {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.tok-source_field {
+  background: rgb(32 128 240 / 14%);
+  color: #2061c4;
+}
+.tok-form_field {
+  background: rgb(24 160 88 / 14%);
+  color: #18914f;
+}
+.tok-system_var {
+  background: rgb(124 77 255 / 16%);
+  color: #6b41d8;
+}
+.tok-const {
+  padding: 2px 8px;
+  background: rgb(var(--fill-color, 240 242 245));
+  color: rgb(var(--base-text-color, 31 31 31));
+}
+.tok-func {
+  background: rgb(240 160 32 / 18%);
+  color: #c47d10;
+  font-weight: 600;
+}
+.tok-raw {
+  background: rgb(16 185 178 / 16%);
+  color: #0d8f89;
+}
+.tok-window {
+  background: rgb(214 51 132 / 16%);
+  color: #c0357a;
+  font-weight: 600;
+}
+.tok-case {
+  background: rgb(79 70 229 / 16%);
+  color: #4f46e5;
+  font-weight: 600;
+}
+.tok-punc {
+  color: var(--n-text-color-disabled, #999);
+}
+/* brackets（V4）语法整条引用 `[表].[字段]` 内的部件：整条一个颜色
+   （.tok.ttc-themed 给淡底 + 表色文字），表名加粗、括号 / 点号 / `本报表.` 前缀压暗。 */
+.tok-part-table {
+  font-weight: 600;
+}
+.tok-part-punc {
+  opacity: 0.45;
+}
+
+/* 深色模式：底色转深、字色转浅，色相语义保持不变。 */
+html.dark .tok-source_field {
+  background: rgb(32 128 240 / 22%);
+  color: #6ab0ff;
+}
+html.dark .tok-form_field {
+  background: rgb(24 160 88 / 22%);
+  color: #4ade80;
+}
+html.dark .tok-system_var {
+  background: rgb(124 77 255 / 24%);
+  color: #b79bff;
+}
+html.dark .tok-func {
+  background: rgb(240 160 32 / 24%);
+  color: #ffb84d;
+}
+html.dark .tok-raw {
+  background: rgb(16 185 178 / 22%);
+  color: #2dd4bf;
+}
+html.dark .tok-window {
+  background: rgb(214 51 132 / 22%);
+  color: #f472b6;
+}
+html.dark .tok-case {
+  background: rgb(79 70 229 / 22%);
+  color: #a5a6f6;
+}
